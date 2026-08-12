@@ -1,5 +1,6 @@
 import requests
 from app.models.opportunity import Opportunity
+from app.scoring.reward_parser import extract_reward
 
 GITHU_API = "https://api.github.com/search/issues"
 
@@ -24,10 +25,13 @@ def find_opportunities():
     opportunities = []
 
     for item in data.get("items", []):
+        reward = extract_reward(item["title"])
+
         opportunity = Opportunity(
             title=item["title"],
             description=item.get("body") or "",
-            reward=None,
+            reward=reward["amount"],
+            currency=reward["currency"],
             url=item["html_url"],
             source="GitHub"
         )
