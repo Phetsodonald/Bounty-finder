@@ -20,6 +20,8 @@ def main():
 
         print(f"Source: {opportunity.source}")
         print(f"URL: {opportunity.url}")
+        print(f"Skills: {opportunity.skills}")
+        print(f"skill_match: {opportunity.skill_match}")
         print()
 
 
