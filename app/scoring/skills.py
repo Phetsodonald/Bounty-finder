@@ -9,6 +9,5 @@ MY_SKILLS = {
     "css": 8,
     "api": 7,
     "testing": 7,
-    "git": 8,
     "docker": 6,
 }
