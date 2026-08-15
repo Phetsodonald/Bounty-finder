@@ -10,4 +10,5 @@ MY_SKILLS = {
     "api": 7,
     "testing": 7,
     "docker": 6,
+    "typescript": 5
 }

@@ -5,6 +5,7 @@ import requests
 
 from app.collectors.github_issue import get_issue
 from app.models.opportunity import Opportunity
+from app.scoring.reward_parser import extract_reward
 from app.scoring.skill_matcher import find_required_skills, calculate_skill_match
 
 
@@ -56,13 +57,17 @@ def find_opportunities():
         body = issue.get("body") or ""
         required_skills = find_required_skills(body)
         skill_match = calculate_skill_match(required_skills)
+        reward = extract_reward(issue["body"])
+
+        if reward["amount"] is None:
+            reward = extract_reward(issue["title"])
         
 
         opportunity = Opportunity(
             title=issue["title"],
             description=body,
-            reward=None,
-            currency=None,
+            reward=reward["amount"],
+            currency=reward["currency"],
             url=item["html_url"],
             source="GitHub",
             skills=required_skills,
