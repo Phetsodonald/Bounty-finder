@@ -1,6 +1,7 @@
 import re
 import os
 from dotenv import load_dotenv
+from datetime import datetime, timedelta, timezone
 import requests
 
 from app.collectors.github_issue import get_issue
@@ -14,6 +15,13 @@ GITHUB_API = "https://api.github.com/search/issues"
 load_dotenv()
 
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+
+
+MAX_AGE_DAYS = 30
+
+cutoff_date = datetime.now(timezone.utc) - timedelta(
+    days=MAX_AGE_DAYS
+)
 
 
 def find_opportunities():
@@ -43,6 +51,14 @@ def find_opportunities():
     opportunities = []
 
     for item in data.get("items", []):
+
+        created_at = datetime.fromisoformat(
+            item["created_at"].replace("Z", "+00:00")
+        )
+
+        if created_at < cutoff_date:
+            continue
+
         parsed_url = parse_github_url(item["html_url"])
 
         if parsed_url is None:
