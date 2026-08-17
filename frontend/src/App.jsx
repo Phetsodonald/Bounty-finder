@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 
-const API_URL = "http://127.0.0.1:8000/api/opportunities/";
+const API_URL = "https://bounty-finder-96hk.onrender.com/api/opportunities/";
 
 function App() {
   const [opportunities, setOpportunities] = useState([]);
